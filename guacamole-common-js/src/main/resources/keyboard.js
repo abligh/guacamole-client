@@ -86,7 +86,7 @@ Guacamole.Keyboard = function(element) {
         13:  [0xFF0D], // enter
         16:  [0xFFE1, 0xFFE1, 0xFFE2], // shift
         17:  [0xFFE3, 0xFFE3, 0xFFE4], // ctrl
-        18:  [0xFFE9, 0xFFE9, 0xFFEA], // alt
+        18:  [0xFFE9, 0xFFE9, 0xFE03], // alt
         19:  [0xFF13], // pause/break
         20:  [0xFFE5], // caps lock
         27:  [0xFF1B], // escape
@@ -117,7 +117,8 @@ Guacamole.Keyboard = function(element) {
         122: [0xFFC8], // f11
         123: [0xFFC9], // f12
         144: [0xFF7F], // num lock
-        145: [0xFF14]  // scroll lock
+        145: [0xFF14], // scroll lock
+        225: [0xFE03]  // altgraph (iso_level3_shift)
     };
 
     /**
@@ -128,9 +129,9 @@ Guacamole.Keyboard = function(element) {
     var keyidentifier_keysym = {
         "AllCandidates": [0xFF3D],
         "Alphanumeric": [0xFF30],
-        "Alt": [0xFFE9, 0xFFE9, 0xFFEA],
+        "Alt": [0xFFE9, 0xFFE9, 0xFE03],
         "Attn": [0xFD0E],
-        "AltGraph": [0xFFEA],
+        "AltGraph": [0xFE03],
         "CapsLock": [0xFFE5],
         "Clear": [0xFF0B],
         "Convert": [0xFF21],
