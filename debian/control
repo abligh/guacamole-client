@@ -1,0 +1,16 @@
+Source: extility-guacamole-client
+Section: unknown
+Priority: extra
+Maintainer: Alex Bligh <alex@flexiant.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.3
+Homepage: http://www.flexiant.com/
+
+Package: extility-guacamole-client
+Architecture: any
+Description: Extility guacamole-client
+ This package contains the Extility guacamole client
+
+
+
+

@@ -1,0 +1,7 @@
+#!/usr/bin/make -f
+export DH_ALWAYS_EXCLUDE=CVS:.svn
+%:
+	dh $@
+
+override_dh_installinit:
+	dh_installinit --update-rcd-params='defaults 98 02'

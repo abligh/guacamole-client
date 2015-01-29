@@ -1,2 +1,7 @@
-*~
+build/
+debian/extility-guacamole-client.debhelper.log
+debian/extility-guacamole-client.substvars
+debian/extility-guacamole-client/
+debian/files
+tmp/
 target/
