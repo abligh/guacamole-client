@@ -22,15 +22,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
-        <link rel="icon" type="image/png" href="images/guacamole-logo-64.png"/>
         <link rel="stylesheet" type="text/css" href="styles/client.css"/>
         <link rel="stylesheet" type="text/css" href="styles/keyboard.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi"/>
         <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <title>Guacamole ${project.version}</title>
+        <title>Console connection</title>
     </head>
 
     <body>
+        <!-- Menu -->
+        <div id="menu">
+            <button id="showKeyboard">Show Keyboard</button>
+            <button id="ctrlAltDelete">Ctrl-Alt-Delete</button>
+            <button id="logout">Logout</button>
+        </div>
 
         <!-- Display -->
         <div class="displayOuter">

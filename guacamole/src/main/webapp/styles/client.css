@@ -136,6 +136,7 @@ div.displayOuter {
     position: absolute;
     left: 0;
     top: 0;
+    padding-top: 15px;
     display: table;
 }
 
@@ -417,4 +418,92 @@ p.hint {
     width: 0;
     height: 0;
     overflow: hidden;
+}/* Menu */
+
+#menu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 4;
+    background: #FEA;
+    border-bottom: 1px solid black;
+    font-size: 0.8em;
+    padding: 2px;
+}
+
+.guac-error #menu {
+    background: #D44;
+}
+
+#menu img {
+    vertical-align: middle;
+}
+
+#menu span {
+    vertical-align: middle;
+}
+
+#menu button {
+    vertical-align: middle;
+    background:   #DC8;
+    border-color: #986;
+    color:        black;
+}
+
+#menu button:hover {
+    background:   #FFC;
+    border-color: #DC8;
+}
+
+.guac-error #menu button {
+    background:   #B33;
+    border-color: #822;
+}
+
+.guac-error #menu button:hover {
+    background:   #F44;
+    border-color: #B33;
+}
+
+div#clipboardDiv {
+    display: none;
+    position: absolute;
+    background: #FA5;
+    padding: 1em;
+
+    border: 1px solid black;
+
+    width: 50em;
+    z-index: 2;
+    opacity: 0.5;
+}
+
+#menu:hover div#clipboardDiv {
+    opacity: 1;
+}
+
+div#clipboardDiv h2 {
+    margin: 0;
+    font-size: 1em;
+}
+
+div#clipboardDiv textarea {
+    width: 100%;
+}
+
+div#menuControl {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+    background: none;
+
+    z-index: 3;
+}
+
+#menu button:focus { 
+    outline: none;
 }

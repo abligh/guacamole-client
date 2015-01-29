@@ -54,6 +54,23 @@ GuacUI.Client = {
     "display"           : document.getElementById("display"),
     "notification_area" : document.getElementById("notificationArea"),
 
+    "menu"        : document.getElementById("menu"),
+    "menuControl" : document.getElementById("menuControl"),
+
+    "buttons": {
+	
+        "showClipboard": document.getElementById("showClipboard"),
+        "showKeyboard" : document.getElementById("showKeyboard"),
+        "ctrlAltDelete": document.getElementById("ctrlAltDelete"),
+        "reconnect"    : document.getElementById("reconnect"),
+        "logout"       : document.getElementById("logout"),
+
+        "touchShowClipboard" : document.getElementById("touchShowClipboard"),
+        "touchShowKeyboard"  : document.getElementById("touchShowKeyboard"),
+        "touchLogout"        : document.getElementById("touchLogout")
+	
+    },
+
     /* Expected Input Rectangle */
 
     "expected_input_x"      : 0,
@@ -921,12 +938,16 @@ GuacUI.Client.attach = function(guac) {
             if (keyboard.pressed[0xFFE3] && keyboard.pressed[0xFFE9]) {
 
                 // If in INTERACTIVE mode, switch to OSK
-                if (GuacUI.StateManager.getState() == GuacUI.Client.states.INTERACTIVE)
+                if (GuacUI.StateManager.getState() == GuacUI.Client.states.INTERACTIVE) {
                     GuacUI.StateManager.setState(GuacUI.Client.states.OSK);
+		    GuacUI.Client.buttons.showKeyboard.textContent = "Hide Keyboard";
+		}
 
                 // If in OSK mode, switch to INTERACTIVE 
-                else if (GuacUI.StateManager.getState() == GuacUI.Client.states.OSK)
+                else if (GuacUI.StateManager.getState() == GuacUI.Client.states.OSK) {
                     GuacUI.StateManager.setState(GuacUI.Client.states.INTERACTIVE);
+		    GuacUI.Client.buttons.showKeyboard.textContent = "Show Keyboard";
+		}
 
             }
         }
@@ -1053,5 +1074,38 @@ GuacUI.Client.attach = function(guac) {
     // Stop detection if press stops
     GuacUI.Client.display.addEventListener('touchend', GuacUI.Client.stopLongPressDetect, true);
 
+    // Send Ctrl-Alt-Delete
+    GuacUI.Client.buttons.ctrlAltDelete.onclick = function() {
+
+	var KEYSYM_CTRL   = 0xFFE3;
+        var KEYSYM_ALT    = 0xFFE9;
+	var KEYSYM_DELETE = 0xFFFF;
+
+        guac.sendKeyEvent(1, KEYSYM_CTRL);
+        guac.sendKeyEvent(1, KEYSYM_ALT);
+	guac.sendKeyEvent(1, KEYSYM_DELETE);
+        guac.sendKeyEvent(0, KEYSYM_DELETE);
+        guac.sendKeyEvent(0, KEYSYM_ALT);
+        guac.sendKeyEvent(0, KEYSYM_CTRL);
+    };
+    
+    GuacUI.Client.buttons.logout.onclick = function() {
+        window.close();
+    };
+
+    GuacUI.Client.buttons.showKeyboard.onclick = function() {
+        // If in INTERACTIVE mode, switch to OSK
+        if (GuacUI.StateManager.getState() == GuacUI.Client.states.INTERACTIVE) {
+            GuacUI.StateManager.setState(GuacUI.Client.states.OSK);
+	    GuacUI.Client.buttons.showKeyboard.textContent = "Hide Keyboard";
+	}
+	
+        // If in OSK mode, switch to INTERACTIVE
+        else if (GuacUI.StateManager.getState() == GuacUI.Client.states.OSK) {
+            GuacUI.StateManager.setState(GuacUI.Client.states.INTERACTIVE);
+	    GuacUI.Client.buttons.showKeyboard.textContent = "Show Keyboard";
+	}	    
+    };
+    
 };
 
