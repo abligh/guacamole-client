@@ -80,16 +80,49 @@
 
                     var tunnel;
 
-                    // If WebSocket available, try to use it.
-                    if (window.WebSocket)
-                        tunnel = new Guacamole.ChainedTunnel(
-                            new Guacamole.WebSocketTunnel("websocket-tunnel"),
-                            new Guacamole.HTTPTunnel("tunnel")
-                        );
+                    function getParameter (paramName, defaultValue) {
+                       var regex = new RegExp('[?][^#]*' + paramName + '=([^&#]*)');
+                       if (typeof defaultValue === 'undefined') {
+                           defaultValue = null;
+                       }
+                       return (window.location.href.match(regex) || ['', defaultValue])[1];
+                    }
 
-                    // If no WebSocket, then use HTTP.
-                    else
-                        tunnel = new Guacamole.HTTPTunnel("tunnel")
+                    var tunneltype = getParameter("tunnel", "auto");
+                    var wsendpoint = getParameter("wsendpoint", "websocket-tunnel");
+                    var httpendpoint = getParameter("httpendpoint", "tunnel");
+                     /* Should Window close on logout */
+                    window.SELF_CLOSE = getParameter("selfclose", 0); /* if 1 then the window will close on logou\
+t if 0 then the logout will redirect, defaults to 0 */
+
+                    switch (tunneltype) {
+                    case 'http':
+                        tunnel = new Guacamole.HTTPTunnel(httpendpoint);
+                        break;
+                    case 'ws':
+                        if (window.WebSocket)
+                            tunnel = new Guacamole.WebSocketTunnel(wsendpoint);
+                        break;
+                    case 'chained':
+                        if (window.WebSocket)
+                            tunnel = new Guacamole.ChainedTunnel(
+                                new Guacamole.WebSocketTunnel(wsendpoint),
+                                new Guacamole.HTTPTunnel(httpendpoint)
+                            );
+                        break;
+                    default:
+                        // Try to guess what tunnel we are using
+			// If WebSocket available, try to use it.
+			if (window.WebSocket)
+			    tunnel = new Guacamole.ChainedTunnel(
+				new Guacamole.WebSocketTunnel(wsendpoint),
+				new Guacamole.HTTPTunnel(httpendpoint)
+			    );
+			// If no WebSocket, then use HTTP.
+			else
+			    tunnel = new Guacamole.HTTPTunnel(httpendpoint)
+			break;
+		    }
 
                     // Instantiate client
                     var guac = new Guacamole.Client(tunnel);
