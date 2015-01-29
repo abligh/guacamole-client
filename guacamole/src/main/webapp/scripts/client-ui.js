@@ -622,10 +622,21 @@ GuacUI.Client.updateDisplayScale = function() {
  */
 GuacUI.Client.updateTitle = function () {
     
+    function getParameter (paramName, defaultValue) {
+        var regex = new RegExp('[?][^#]*' + paramName + '=([^&#]*)');
+	if (typeof defaultValue === 'undefined') {
+	    defaultValue = null;
+	}
+	
+	return (window.location.href.match(regex) || ['', defaultValue])[1];
+    }
+
+    var connectionName = getParameter("title", GuacUI.Client.connectionName);
+
     if (GuacUI.Client.titlePrefix)
-        document.title = GuacUI.Client.titlePrefix + " " + GuacUI.Client.connectionName;
+        document.title = GuacUI.Client.titlePrefix + " " + connectionName;
     else
-        document.title = GuacUI.Client.connectionName;
+        document.title = connectionName;
 
 };
 
