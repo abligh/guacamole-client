@@ -648,7 +648,7 @@ GuacUI.Client.updateTitle = function () {
 	return (window.location.href.match(regex) || ['', defaultValue])[1];
     }
 
-    var connectionName = getParameter("title", GuacUI.Client.connectionName);
+    var connectionName = decodeURIComponent(getParameter("title", GuacUI.Client.connectionName));
 
     if (GuacUI.Client.titlePrefix)
         document.title = GuacUI.Client.titlePrefix + " " + connectionName;
