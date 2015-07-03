@@ -77,16 +77,16 @@ Guacamole.Keyboard = function(element) {
 
     /**
      * Map of known JavaScript keycodes which do not map to typable characters
-     * to their unshifted X11 keysym equivalents.
+     * to their X11 keysym equivalents.
      * @private
      */
-    var unshiftedKeysym = {
+    var keycodeKeysyms = {
         8:   [0xFF08], // backspace
         9:   [0xFF09], // tab
         13:  [0xFF0D], // enter
         16:  [0xFFE1, 0xFFE1, 0xFFE2], // shift
         17:  [0xFFE3, 0xFFE3, 0xFFE4], // ctrl
-        18:  [0xFFE9, 0xFFE9, 0xFFEA], // alt
+        18:  [0xFFE9, 0xFFE9, 0xFE03], // alt
         19:  [0xFF13], // pause/break
         20:  [0xFFE5], // caps lock
         27:  [0xFF1B], // escape
@@ -117,7 +117,8 @@ Guacamole.Keyboard = function(element) {
         122: [0xFFC8], // f11
         123: [0xFFC9], // f12
         144: [0xFF7F], // num lock
-        145: [0xFF14]  // scroll lock
+        145: [0xFF14], // scroll lock
+        225: [0xFE03]  // altgraph (iso_level3_shift)
     };
 
     /**
@@ -128,9 +129,9 @@ Guacamole.Keyboard = function(element) {
     var keyidentifier_keysym = {
         "AllCandidates": [0xFF3D],
         "Alphanumeric": [0xFF30],
-        "Alt": [0xFFE9, 0xFFE9, 0xFFEA],
+        "Alt": [0xFFE9, 0xFFE9, 0xFE03],
         "Attn": [0xFD0E],
-        "AltGraph": [0xFFEA],
+        "AltGraph": [0xFE03],
         "CapsLock": [0xFFE5],
         "Clear": [0xFF0B],
         "Convert": [0xFF21],
@@ -138,6 +139,22 @@ Guacamole.Keyboard = function(element) {
         "Crsel": [0xFD1C],
         "CodeInput": [0xFF37],
         "Control": [0xFFE3, 0xFFE3, 0xFFE4],
+        "DeadGrave": [0xFE50],
+        "DeadAcute": [0xFE51],
+        "DeadCircumflex": [0xFE52],
+        "DeadTilde": [0xFE53],
+        "DeadMacron": [0xFE54],
+        "DeadBreve": [0xFE55],
+        "DeadAboveDot": [0xFE56],
+        "DeadUmlaut": [0xFE57],
+        "DeadAboveRing": [0xFE58],
+        "DeadDoubleacute": [0xFE59],
+        "DeadCaron": [0xFE5A],
+        "DeadCedilla": [0xFE5B],
+        "DeadOgonek": [0xFE5C],
+        "DeadIota": [0xFE5D],
+        "DeadVoicedSound": [0xFE5E],
+        "DeadSemivoicedSound": [0xFE5F],
         "Down": [0xFF54],
         "End": [0xFF57],
         "Enter": [0xFF0D],
@@ -203,27 +220,17 @@ Guacamole.Keyboard = function(element) {
     };
 
     /**
-     * Map of known JavaScript keycodes which do not map to typable characters
-     * to their shifted X11 keysym equivalents. Keycodes must only be listed
-     * here if their shifted X11 keysym equivalents differ from their unshifted
-     * equivalents.
-     * @private
-     */
-    var shiftedKeysym = {
-        18:  [0xFFE7, 0xFFE7, 0xFFEA]  // alt
-    };
-
-    /**
      * All keysyms which should not repeat when held down.
      * @private
      */
     var no_repeat = {
+        0xFE03: true, // ISO Level 3 Shift (AltGr)
         0xFFE1: true, // Left shift
         0xFFE2: true, // Right shift
         0xFFE3: true, // Left ctrl 
         0xFFE4: true, // Right ctrl 
         0xFFE9: true, // Left alt
-        0xFFEA: true  // Right alt (or AltGr)
+        0xFFEA: true, // Right alt
     };
 
     /**
@@ -347,17 +354,7 @@ Guacamole.Keyboard = function(element) {
 
     function keysym_from_keycode(keyCode, location) {
 
-        var keysyms;
-
-        // If not shifted, just return unshifted keysym
-        if (!guac_keyboard.modifiers.shift)
-            keysyms = unshiftedKeysym[keyCode];
-
-        // Otherwise, return shifted keysym, if defined
-        else
-            keysyms = shiftedKeysym[keyCode] || unshiftedKeysym[keyCode];
-
-        return get_keysym(keysyms, location);
+        return get_keysym(keycodeKeysyms[keyCode], location);
 
     }
 
