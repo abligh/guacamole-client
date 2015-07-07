@@ -53,6 +53,12 @@ Guacamole.OnScreenKeyboard = function(url) {
 
     var on_screen_keyboard = this;
 
+    var simulatorMap = {
+        "\t": { sym: 0xFF09, mods: [] }, // tab
+        "\n": { sym: 0xFF0D, mods: [] } // enter
+    };
+    var simulatorModMap = {};
+
     /**
      * State of all modifiers. This is the bitwise OR of all active modifier
      * values.
@@ -309,7 +315,7 @@ Guacamole.OnScreenKeyboard = function(url) {
                                     real_keysym = 0x01000000 | charCode;
 
                             }
-                            
+
                             // Create cap
                             var cap = new Guacamole.OnScreenKeyboard.Cap(content, real_keysym);
 
@@ -328,12 +334,14 @@ Guacamole.OnScreenKeyboard = function(url) {
 
                             // Get modifier value
                             var modifierValue = 0;
+                            var simMods = []
                             if (e.getAttribute("if")) {
 
                                 // Get modifier value for specified comma-delimited
                                 // list of required modifiers.
                                 var requirements = e.getAttribute("if").split(",");
                                 for (var i=0; i<requirements.length; i++) {
+                                    simMods.push(requirements[i])
                                     modifierValue |= getModifierMask(requirements[i]);
                                     addClass(cap_element, "guac-keyboard-requires-" + requirements[i]);
                                     addClass(key_element, "guac-keyboard-uses-" + requirements[i]);
@@ -345,6 +353,10 @@ Guacamole.OnScreenKeyboard = function(url) {
                             key.modifierMask |= modifierValue;
                             key.caps[modifierValue] = cap;
 
+                            if (!simulatorMap[content])
+                                simulatorMap[content] = { sym: real_keysym, mods: simMods };
+                            if (cap.modifier)
+                                simulatorModMap[cap.modifier] = real_keysym;
                         }
                     });
 
@@ -571,6 +583,36 @@ Guacamole.OnScreenKeyboard = function(url) {
             scaledElement.scale(unit)
         }
 
+    };
+
+    function simulateKeypress(chr) {
+        var key = simulatorMap[chr];
+        if (key && on_screen_keyboard.onkeydown && on_screen_keyboard.onkeyup) {
+            for (var i=0; i<key.mods.length; i++) {
+                msym = simulatorModMap[key.mods[i]]
+                if (msym) {
+                    on_screen_keyboard.onkeydown(msym);
+                }
+            }
+            on_screen_keyboard.onkeydown(key.sym);
+            on_screen_keyboard.onkeyup(key.sym);
+            for (var i=key.mods.length-1; i>=0; i--) {
+                msym = simulatorModMap[key.mods[i]]
+                if (msym) {
+                    on_screen_keyboard.onkeyup(msym);
+                }
+            }
+        }
+    }
+
+    this.simulateKeypresses = function(text) {
+        for (var i = 0; i < text.length; i++) {
+            (function(index) {
+                setTimeout(function() {
+                    simulateKeypress(text[index]);
+                }, 5 * i);
+            })(i);
+        }
     };
 
 };
