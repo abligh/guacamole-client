@@ -86,20 +86,51 @@ div.dialog div.buttons {
     text-align: center;
 }
 
+#menuSeparator {
+    display: inline-block;
+}
+
 #pasteField {
-    border-style: none;
-    border-width: 0px;
-    height: 1px;
-    width: 1px;
-    resize: none;
-    background-colour: transparent;
-    color: transparent;
-    z-order: -100;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: none;
-    outline: none;
+  border-color: #986;
+  border-style: solid;
+  border-width: 1px;
+  height: 11px;
+  width: 150px;
+  resize: none;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 1em;
+  padding-left: 1em;
+  color: transparent;
+  top: 0;
+  left: 0;
+  outline: none;
+  display: inline-block;
+  background-color: #DC8;
+  overflow: hidden;
+  float: right;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 4px;
+  vertical-align: middle;
+  text-align: center;
+  cursor: default;
+  font-family: FreeSans, Helvetica, Arial, sans-serif;
+  font-size: 0.9em;
+}
+#pasteField::-webkit-input-placeholder {  /* WebKit browsers */
+   color: black;
+}
+#pasteField:-moz-placeholder {  /* Mozilla Firefox 4 to 18 */
+   color: black;
+   opacity: 1;
+}
+#pasteField::-moz-placeholder {  /* Mozilla Firefox 19+ */
+   color: black;
+   opacity: 1;
+}
+#pasteField:-ms-input-placeholder {  /* Internet Explorer 10+ */
+   color: black;
 }
 
 button {

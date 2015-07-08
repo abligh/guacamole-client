@@ -334,14 +334,17 @@ Guacamole.OnScreenKeyboard = function(url) {
 
                             // Get modifier value
                             var modifierValue = 0;
-                            var simMods = []
+                            var simMods = [];
+                            var skip = false;
                             if (e.getAttribute("if")) {
 
                                 // Get modifier value for specified comma-delimited
                                 // list of required modifiers.
                                 var requirements = e.getAttribute("if").split(",");
                                 for (var i=0; i<requirements.length; i++) {
-                                    simMods.push(requirements[i])
+                                    simMods.push(requirements[i]);
+                                    if (requirements[i] === "caps")
+                                        skip = true;
                                     modifierValue |= getModifierMask(requirements[i]);
                                     addClass(cap_element, "guac-keyboard-requires-" + requirements[i]);
                                     addClass(key_element, "guac-keyboard-uses-" + requirements[i]);
@@ -353,7 +356,7 @@ Guacamole.OnScreenKeyboard = function(url) {
                             key.modifierMask |= modifierValue;
                             key.caps[modifierValue] = cap;
 
-                            if (!simulatorMap[content])
+                            if (!skip && !simulatorMap[content])
                                 simulatorMap[content] = { sym: real_keysym, mods: simMods };
                             if (cap.modifier)
                                 simulatorModMap[cap.modifier] = real_keysym;
