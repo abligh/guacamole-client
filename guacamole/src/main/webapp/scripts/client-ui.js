@@ -1099,9 +1099,11 @@ GuacUI.Client.attach = function(guac) {
     };
 
     window.addEventListener("paste", function(e) {
-        types = e.clipboardData.types;
-        if (((types instanceof DOMStringList) && types.contains("text/plain")) ||
-            (/text\/plain/.test(types))) {
+        var types = null;
+        if (e.clipboardData)
+            types = e.clipboardData.types;
+        if (types && (((types instanceof DOMStringList) && types.contains("text/plain")) ||
+            (/text\/plain/.test(types)))) {
             var data = e.clipboardData.getData('text/plain');
             if (data && (data != "")) {
                 GuacUI.Client.keyboardSimulator.simulateKeypresses(data);
@@ -1125,13 +1127,6 @@ GuacUI.Client.attach = function(guac) {
         }, 100);
         return true;
     });
-
-    // Horrible hack as firefox needs the thing display visible
-    var isFirefox = typeof InstallTrigger !== 'undefined';
-    var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-    if (isFirefox || isSafari) {
-        GuacUI.Client.pasteField.style.display = 'block';
-    }
 
     setTimeout(function () {
         GuacUI.Client.pasteField.focus();
