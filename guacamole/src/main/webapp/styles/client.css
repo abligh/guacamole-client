@@ -139,13 +139,13 @@ div.dialog div.buttons {
   right: 0;
   top: 0;
   height: 11px;
-  width: 147px;
+  width: 163px;
   font-family: 'Lucida Grande', FreeSans, Helvetica, Arial, sans-serif;
   font-size: 0.8em;
+  text-align: center;
   margin-top: 3px;
   margin-right: 7px;
   padding: 4px;
-  padding-left: 20px;
   background-color: #DC8;
 }
 
