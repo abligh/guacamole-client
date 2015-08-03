@@ -86,6 +86,69 @@ div.dialog div.buttons {
     text-align: center;
 }
 
+#menuSeparator {
+    display: inline-block;
+}
+
+#pasteField {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  border-color: #986;
+  border-style: solid;
+  border-width: 1px;
+  height: 13px;
+  width: 150px;
+  resize: none;
+  padding: 0.25em;
+  padding-right: 1em;
+  padding-left: 1em;
+  color: transparent;
+  top: 0;
+  outline: none;
+  display: inline-block;
+  background-color: transparent;
+  overflow: hidden;
+  float: right;
+  margin-top: 2px;
+  margin-bottom: 0px;
+  margin-right: 6px;
+  vertical-align: middle;
+  cursor: default;
+  font-family: FreeSans, Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+}
+#pasteField::-webkit-input-placeholder {  /* WebKit browsers */
+   color: black;
+}
+#pasteField:-moz-placeholder {  /* Mozilla Firefox 4 to 18 */
+   color: black;
+   opacity: 1;
+}
+#pasteField::-moz-placeholder {  /* Mozilla Firefox 19+ */
+   color: black;
+   opacity: 1;
+}
+#pasteField:-ms-input-placeholder {  /* Internet Explorer 10+ */
+   color: black;
+}
+
+#pasteFieldPlaceholder {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 0;
+  height: 11px;
+  width: 163px;
+  font-family: 'Lucida Grande', FreeSans, Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  text-align: center;
+  margin-top: 3px;
+  margin-right: 7px;
+  padding: 4px;
+  background-color: #DC8;
+}
+
 button {
 
     border-style: solid;
@@ -449,6 +512,8 @@ p.hint {
     background:   #DC8;
     border-color: #986;
     color:        black;
+    max-height: 20px;
+    font-size: 0.8em;
 }
 
 #menu button:hover {

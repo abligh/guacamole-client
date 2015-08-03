@@ -71,6 +71,8 @@ GuacUI.Client = {
 	
     },
 
+    "pasteField" : document.getElementById("pasteField"),
+
     /* Expected Input Rectangle */
 
     "expected_input_x"      : 0,
@@ -463,6 +465,7 @@ GuacUI.Client.OnScreenKeyboard = function() {
 
     // On-screen keyboard
     var keyboard = new Guacamole.OnScreenKeyboard("layouts/en-us-qwerty.xml");
+    GuacUI.Client.keyboardSimulator = keyboard
     keyboard_container.appendChild(keyboard.getElement());
 
     var last_keyboard_width = 0;
@@ -853,6 +856,8 @@ GuacUI.Client.attach = function(guac) {
      */
 
     guac_display.onclick = function(e) {
+        GuacUI.Client.pasteField.focus();
+        GuacUI.Client.pasteField.value='';
         e.preventDefault();
         return false;
     };
@@ -1092,6 +1097,41 @@ GuacUI.Client.attach = function(guac) {
     GuacUI.Client.buttons.logout.onclick = function() {
         window.close();
     };
+
+    window.addEventListener("paste", function(e) {
+        var types = null;
+        if (e.clipboardData)
+            types = e.clipboardData.types;
+        if (types && (((types instanceof DOMStringList) && types.contains("text/plain")) ||
+            (/text\/plain/.test(types)))) {
+            var data = e.clipboardData.getData('text/plain');
+            if (data && (data != "")) {
+                GuacUI.Client.keyboardSimulator.simulateKeypresses(data);
+                if (e.preventDefault) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+                GuacUI.Client.pasteField.value = '';
+                return false;
+            }
+        }
+        // here we should really see if we've failed to get data above and if so set
+        // something off on a timer to copy the contents of the text field
+        setTimeout (function() {
+            data = GuacUI.Client.pasteField.value;
+            if (data && (data != "")) {
+                GuacUI.Client.keyboardSimulator.simulateKeypresses(data);
+            }
+            GuacUI.Client.pasteField.value = '';
+            GuacUI.Client.pasteField.focus();
+        }, 100);
+        return true;
+    });
+
+    setTimeout(function () {
+        GuacUI.Client.pasteField.focus();
+        GuacUI.Client.pasteField.value='';
+    }, 100);
 
     GuacUI.Client.buttons.showKeyboard.onclick = function() {
         // If in INTERACTIVE mode, switch to OSK
